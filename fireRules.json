@@ -2,6 +2,7 @@
   "rules": {
     ".read": "true",
     ".write": "true",
+    
     "contacts": {
             "$contact": {
                 "name": {

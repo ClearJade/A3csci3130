@@ -10,10 +10,15 @@ public class DetailViewActivity extends Activity {
     private EditText nameField, businessNumberField,  primaryBusinessField, addressField,provinceField;
     Contact receivedPersonInfo;
 
+    private MyApplicationData appState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view);
+
+        appState = ((MyApplicationData) getApplicationContext());
+
         receivedPersonInfo = (Contact)getIntent().getSerializableExtra("Contact");
 
         businessNumberField = (EditText) findViewById(R.id.businessNumber);
@@ -32,11 +37,24 @@ public class DetailViewActivity extends Activity {
     }
 
     public void updateContact(View v){
-        //TODO: Update contact funcionality
+        String businessID = receivedPersonInfo.getUid();
+        String businessNumber = businessNumberField.getText().toString();
+        String name = nameField.getText().toString();
+        String primaryBusiness = primaryBusinessField.getText().toString();
+        String address = addressField.getText().toString();
+        String province = provinceField.getText().toString();
+
+
+        Contact business = new Contact(businessID, businessNumber, name, primaryBusiness, address, province);
+
+        appState.firebaseReference.child(businessID).setValue(business);
+
+        finish();
     }
 
-    public void eraseContact(View v)
-    {
-        //TODO: Erase contact functionality
+    public void eraseContact(View v){
+        String businessID = receivedPersonInfo.getUid();
+        appState.firebaseReference.child(businessID).removeValue();
+        finish();
     }
 }
